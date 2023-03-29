@@ -38,9 +38,9 @@ jobs:
       - name: Login to AWS ECR
         id: login-ecr
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | aws configure --profile ecr-user set aws_access_key_id
+          echo SS_KEY_ID }} | aws configure --profile ecr-user set aws_access_key_id
           echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | aws configure --profile ecr-user set aws_secret_access_key
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY_URI }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY_URI }}${{ secrets.AWS_ACCE
           
       - name: Push Docker image to ECR
         run: |
