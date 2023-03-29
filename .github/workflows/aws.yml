@@ -42,9 +42,10 @@ jobs:
             aws-region: ${{ env.AWS_REGION }}
       - name: Build and Push Docker image to ECR
         run: |
-          sudo docker build -t ${{ env.ECR_REGISTRY_URI }}:latest .
+          sudo systemctl restart docker
+          sudo docker build -t 634441478571.dkr.ecr.us-west-1.amazonaws.com/demo_ecs_app:latest .
           aws ecr get-login-password --region us-west-1 | sudo docker login --username AWS --password-stdin 634441478571.dkr.ecr.us-west-1.amazonaws.com
-          sudo docker push ${{ env.ECR_REGISTRY_URI }}::latest
+          sudo docker push 634441478571.dkr.ecr.us-west-1.amazonaws.com/demo_ecs_app:latest
         
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -52,7 +53,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ env.ECR_REGISTRY_URI }}::latest
+          image: 634441478571.dkr.ecr.us-west-1.amazonaws.com/demo_ecs_app:latest
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
