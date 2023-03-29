@@ -1,0 +1,27 @@
+{
+  "requiresCompatibilities": [
+      "FARGATE"
+  ],
+  "family": "demo_ecs_fam",
+  "containerDefinitions": [
+      {
+          "name": "demo-ecs-app",
+          "image": "634441478571.dkr.ecr.us-west-1.amazonaws.com/demo-app:latest",
+          "essential": true,
+          "cpu": "1024",
+          "memory":"2048",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort"     : 3000
+            }
+          ]
+
+      }
+  ],
+  "volumes": [],
+  "networkMode": "awsvpc",
+  "memory": "2048",
+  "cpu": "1024",
+  "executionRoleArn": "arn:aws:iam::634441478571:role/ecsTaskExecutionRole"
+}
