@@ -21,6 +21,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: openssl update
+      run: |
+        sudo apt-get update
+        sudo apt-get install libssl-dev
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
