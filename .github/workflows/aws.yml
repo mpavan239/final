@@ -32,7 +32,9 @@ jobs:
     - name: Install Dependencies
       run: npm install
     - name: Build Express app
-      run: npm run build
+      run: |
+        npx browserslist@latest --update-db
+        npm run build
     - name: Push Docker Image to ECR
       run: sudo docker build -t ${{ env.ECR_REGISTRY_URI }}:latest .
 
