@@ -30,6 +30,10 @@ jobs:
         run: npm install
       - name: Build Express app
         run: npm run build
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install awscli -y
       
       - name: Login to AWS ECR
         id: login-ecr
