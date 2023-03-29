@@ -34,17 +34,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install awscli -y
-      
-      - name: Login to AWS ECR
-        id: login-ecr
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ env.AWS_REGION }}
+      - name: Login to ECR
+        run: aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin 634441478571.dkr.ecr.us-west-1.amazonaws.com
+      - name: Build and Push Docker image to ECR
         run: |
-          echo SS_KEY_ID }} | aws configure --profile ecr-user set aws_access_key_id
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | aws configure --profile ecr-user set aws_secret_access_key
-          aws ecr get-login-password --region ${{ env.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY_URI }}${{ secrets.AWS_ACCE
-          
-      - name: Push Docker image to ECR
-        run: |
-          sudo docker build -t $ECR_REGISTRY_URI:latest .
+          sudo docker build -t ${{ env.ECR_REGISTRY_URI }}:latest .
           sudo docker push ${{ env.ECR_REGISTRY_URI }}:latest
         
       - name: Fill in the new image ID in the Amazon ECS task definition
