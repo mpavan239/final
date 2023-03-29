@@ -40,7 +40,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Push Docker image to ECR
-        run: aws ecr get-login-password --region us-west-1 | sudo docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY_URI }} | sudo docker push ${{ env.ECR_REGISTRY_URI }}:latest
+        run: |
+          aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY_URI }} 
+          sudo docker push ${{ env.ECR_REGISTRY_URI }}:latest
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
